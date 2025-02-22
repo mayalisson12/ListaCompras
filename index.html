@@ -75,6 +75,7 @@
             margin-top: 8px;
             transition: 0.3s;
             gap: 10px;
+            flex-wrap: wrap; /* Permite que os itens se ajustem quando necessário */
         }
         .item-text, .preco-text {
             flex-grow: 1;
@@ -101,6 +102,7 @@
             transform: scale(1.2);
             margin-left: 5px;
             cursor: pointer;
+            margin-right: 10px; /* Ajusta o espaço entre o checkbox e os outros itens */
         }
         .calculadora {
             position: fixed;
@@ -119,13 +121,13 @@
             color: white;
             border: none;
             border-radius: 8px;
-            width: 40px;
-            height: 40px;
+            width: 30px; /* Diminui o tamanho do botão */
+            height: 30px; /* Diminui o tamanho do botão */
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 18px;
+            font-size: 16px; /* Ajusta o tamanho da fonte do botão */
             font-weight: bold;
             transition: 0.3s;
             flex-shrink: 0;
@@ -194,13 +196,17 @@
                 font-size: 14px;
             }
             .remover {
-                width: 35px;
-                height: 35px;
-                font-size: 16px;
+                width: 30px;
+                height: 30px;
+                font-size: 14px; /* Ajusta o tamanho da fonte no botão para celular */
             }
             .calculadora {
                 font-size: 16px;
                 padding: 12px;
+            }
+            li {
+                flex-direction: column; /* Empilha os itens verticalmente em telas pequenas */
+                align-items: flex-start; /* Alinha os itens à esquerda */
             }
         }
         /* Novo estilo para o botão de WhatsApp */
@@ -211,7 +217,7 @@
             align-items: center;
             justify-content: center;
             gap: 10px;
-            font-size: 14px;
+            font-size: 18px;
             font-weight: 600;
             padding: 12px 20px;
             border-radius: 8px;
@@ -247,7 +253,6 @@
     </div>
     <div id="customAlert" class="alert">Este item já está na lista!</div>
     <div id="successAlert" class="alert">Item adicionado com sucesso!</div>
-    <div id="deleteAlert" class="alert">Item excluído com sucesso!</div> <!-- Alerta para exclusão -->
     <script>
         function adicionarItem() {
             const itemInput = document.getElementById("item");
@@ -265,91 +270,76 @@
                     return;
                 }
             }
-            
+
             const li = document.createElement("li");
-            li.innerHTML = `<span class='item-text' onclick='editarItem(this)'>${itemNome}</span>
-                            <input type='text' class='item-input' value='${itemNome}' onblur='salvarEdicao(this)'>
-                            <span class='preco-text' onclick='editarPreco(this)'>R$ 0.00</span>
-                            <input type='number' class='preco-input' placeholder='Preço' onblur='salvarPreco(this)' oninput='atualizarTotal()'>
-                            <input type='checkbox' class='checkbox' onchange='atualizarTotal()'>
-                            <button class='remover' onclick='removerItem(this)'>X</button>`;
+            const itemText = document.createElement("span");
+            itemText.classList.add("item-text");
+            itemText.textContent = itemNome;
+
+            const precoInput = document.createElement("input");
+            precoInput.classList.add("preco-input");
+            precoInput.placeholder = "Preço";
+
+            const precoText = document.createElement("span");
+            precoText.classList.add("preco-text");
+            precoText.textContent = "R$ 0,00";
+
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.classList.add("checkbox");
+            checkbox.addEventListener("change", atualizarPreco);
+
+            const removerButton = document.createElement("button");
+            removerButton.classList.add("remover");
+            removerButton.innerHTML = "X";
+            removerButton.addEventListener("click", function() {
+                lista.removeChild(li);
+                atualizarPreco();
+            });
+
+            li.appendChild(checkbox);
+            li.appendChild(itemText);
+            li.appendChild(precoInput);
+            li.appendChild(precoText);
+            li.appendChild(removerButton);
             lista.appendChild(li);
-            
+
             itemInput.value = "";
             exibirAlerta("Item adicionado com sucesso!", "success");
-            atualizarTotal();
+            atualizarPreco();
         }
 
-        function editarItem(element) {
-            const input = element.nextElementSibling;
-            element.style.display = "none";
-            input.style.display = "block";
-            input.focus();
-        }
-
-        function salvarEdicao(input) {
-            const text = input.previousElementSibling;
-            text.textContent = input.value;
-            input.style.display = "none";
-            text.style.display = "block";
-        }
-
-        function editarPreco(element) {
-            const input = element.nextElementSibling;
-            element.style.display = "none";
-            input.style.display = "block";
-            input.focus();
-        }
-
-        function salvarPreco(input) {
-            const text = input.previousElementSibling;
-            let valor = parseFloat(input.value) || 0;
-            text.textContent = `R$ ${valor.toFixed(2)}`;
-            input.style.display = "none";
-            text.style.display = "block";
-            atualizarTotal();
-        }
-
-        function atualizarTotal() {
-            let totalComMarcado = 0;
-            
-            document.querySelectorAll(".preco-text").forEach(span => {
-                const valor = parseFloat(span.textContent.replace("R$ ", "")) || 0;
-                const checkbox = span.parentElement.querySelector(".checkbox");
+        function atualizarPreco() {
+            let total = 0;
+            const itens = document.querySelectorAll("li");
+            itens.forEach(function(item) {
+                const checkbox = item.querySelector(".checkbox");
+                const precoText = item.querySelector(".preco-text");
+                const precoInput = item.querySelector(".preco-input");
                 if (checkbox.checked) {
-                    totalComMarcado += valor;
+                    const preco = parseFloat(precoInput.value || 0);
+                    total += preco;
+                    precoText.textContent = `R$ ${preco.toFixed(2)}`;
+                } else {
+                    precoText.textContent = "R$ 0,00";
                 }
             });
-            
-            document.getElementById("totalComMarcado").textContent = `R$ ${totalComMarcado.toFixed(2)}`;
-        }
-
-        function removerItem(botao) {
-            const li = botao.parentElement;
-            li.remove();
-            atualizarTotal();
-            exibirAlerta("Item excluído com sucesso!", "error"); // Alerta de exclusão
+            document.getElementById("totalComMarcado").textContent = `R$ ${total.toFixed(2)}`;
         }
 
         function exibirAlerta(mensagem, tipo) {
             const alerta = tipo === "success" ? document.getElementById("successAlert") : document.getElementById("customAlert");
             alerta.textContent = mensagem;
-            alerta.className = `alert ${tipo}`;
+            alerta.classList.add(tipo);
             alerta.style.display = "block";
-            alerta.style.animation = "slideIn 0.5s ease-out";
-
-            setTimeout(() => {
-                alerta.style.animation = "slideOut 0.5s ease-out";
-                setTimeout(() => {
-                    alerta.style.display = "none";
-                }, 500);
+            setTimeout(function() {
+                alerta.style.display = "none";
             }, 3000);
         }
 
         function enviarWhatsApp() {
             const total = document.getElementById("totalComMarcado").textContent;
-            const mensagem = `Olá, minha lista de compras:\n\nTotal: ${total}\n\nA lista está completa!`;
-            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            const url = `https://wa.me/?text=Lista%20de%20Compras:%20${total}`;
             window.open(url, "_blank");
         }
     </script>
