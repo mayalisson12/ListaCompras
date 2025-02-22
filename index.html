@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Compras</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #4a90e2, #6fa3ef);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 100%;
+            min-height: 80vh;
+            overflow-y: auto;
+        }
+        h2 {
+            color: #4a90e2;
+            font-weight: 600;
+            text-align: center;
+            font-size: 24px;
+        }
+        input, button {
+            padding: 12px;
+            width: 100%;
+            box-sizing: border-box;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        input {
+            border: 2px solid #4a90e2;
+            outline: none;
+        }
+        button {
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: 0.3s;
+            font-weight: 600;
+        }
+        button:hover {
+            background-color: #357ab7;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+        }
+        li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            background: #f0f8ff;
+            border-radius: 8px;
+            margin-top: 8px;
+            transition: 0.3s;
+            gap: 10px;
+        }
+        .item-text, .preco-text {
+            flex-grow: 1;
+            cursor: pointer;
+            padding: 8px;
+            min-width: 80px;
+            text-align: left;
+            font-size: 16px;
+        }
+        .item-input, .preco-input {
+            display: none;
+            flex-grow: 1;
+            border: none;
+            background: none;
+            font-size: 16px;
+            padding: 8px;
+            text-align: center;
+            width: 100px;
+        }
+        .preco-text {
+            min-width: 90px;
+        }
+        .checkbox {
+            transform: scale(1.2);
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        .calculadora {
+            position: fixed;
+            bottom: 75px;
+            right: 20px;
+            background: #4a90e2;
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .remover {
+            background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            font-weight: bold;
+            transition: 0.3s;
+            flex-shrink: 0;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+        }
+        .remover:hover {
+            background: linear-gradient(135deg, #ff1a1a, #e60000);
+            transform: scale(1.1);
+            box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+        }
+        .remover:active {
+            transform: scale(0.9);
+        }
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: white;
+            padding: 15px 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            font-size: 16px;
+            font-weight: 600;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+        .alert.error {
+            background-color: #ff4d4d;
+        }
+        .alert.success {
+            background-color: #4caf50;
+        }
+        @keyframes slideIn {
+            from {
+                top: -50px;
+                opacity: 0;
+            }
+            to {
+                top: 20px;
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                top: 20px;
+                opacity: 1;
+            }
+            to {
+                top: -50px;
+                opacity: 0;
+            }
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            h2 {
+                font-size: 22px;
+            }
+            input, button {
+                padding: 10px;
+                font-size: 14px;
+            }
+            .item-text, .preco-text {
+                font-size: 14px;
+            }
+            .remover {
+                width: 35px;
+                height: 35px;
+                font-size: 16px;
+            }
+            .calculadora {
+                font-size: 16px;
+                padding: 12px;
+            }
+        }
+        /* Novo estilo para o botão de WhatsApp */
+        .whatsapp-btn {
+            background-color: #25D366;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px 20px;
+            border-radius: 8px;
+            width: auto;
+            max-width: 300px;
+            margin-top: 20px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+        }
+        .whatsapp-btn:hover {
+            background-color: #128C7E;
+        }
+        .whatsapp-btn img {
+            width: 20px;
+            height: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Lista de Compras</h2>
+        <input type="text" id="item" placeholder="Nome do item">
+        <button onclick="adicionarItem()">Adicionar</button>
+        <ul id="lista"></ul>
+        <button class="whatsapp-btn" onclick="enviarWhatsApp()">
+            <img src="/img/whatsapp.png" alt="WhatsApp">
+            Enviar via WhatsApp
+        </button>
+    </div>
+    <div class="calculadora">
+        <p>Total adicionado: <span id="totalComMarcado">R$ 0,00</span></p>
+    </div>
+    <div id="customAlert" class="alert">Este item já está na lista!</div>
+    <div id="successAlert" class="alert">Item adicionado com sucesso!</div>
+    <div id="deleteAlert" class="alert">Item excluído com sucesso!</div> <!-- Alerta para exclusão -->
+    <script>
+        function adicionarItem() {
+            const itemInput = document.getElementById("item");
+            const lista = document.getElementById("lista");
+            let itemNome = itemInput.value.trim();
+            
+            if (!itemNome) return;
+            
+            itemNome = itemNome.charAt(0).toUpperCase() + itemNome.slice(1).toLowerCase();
+            
+            const itensExistentes = document.querySelectorAll(".item-text");
+            for (let item of itensExistentes) {
+                if (item.textContent.toLowerCase() === itemNome.toLowerCase()) {
+                    exibirAlerta("Este item já está na lista!", "error");
+                    return;
+                }
+            }
+            
+            const li = document.createElement("li");
+            li.innerHTML = `<span class='item-text' onclick='editarItem(this)'>${itemNome}</span>
+                            <input type='text' class='item-input' value='${itemNome}' onblur='salvarEdicao(this)'>
+                            <span class='preco-text' onclick='editarPreco(this)'>R$ 0.00</span>
+                            <input type='number' class='preco-input' placeholder='Preço' onblur='salvarPreco(this)' oninput='atualizarTotal()'>
+                            <input type='checkbox' class='checkbox' onchange='atualizarTotal()'>
+                            <button class='remover' onclick='removerItem(this)'>X</button>`;
+            lista.appendChild(li);
+            
+            itemInput.value = "";
+            exibirAlerta("Item adicionado com sucesso!", "success");
+            atualizarTotal();
+        }
+
+        function editarItem(element) {
+            const input = element.nextElementSibling;
+            element.style.display = "none";
+            input.style.display = "block";
+            input.focus();
+        }
+
+        function salvarEdicao(input) {
+            const text = input.previousElementSibling;
+            text.textContent = input.value;
+            input.style.display = "none";
+            text.style.display = "block";
+        }
+
+        function editarPreco(element) {
+            const input = element.nextElementSibling;
+            element.style.display = "none";
+            input.style.display = "block";
+            input.focus();
+        }
+
+        function salvarPreco(input) {
+            const text = input.previousElementSibling;
+            let valor = parseFloat(input.value) || 0;
+            text.textContent = `R$ ${valor.toFixed(2)}`;
+            input.style.display = "none";
+            text.style.display = "block";
+            atualizarTotal();
+        }
+
+        function atualizarTotal() {
+            let totalComMarcado = 0;
+            
+            document.querySelectorAll(".preco-text").forEach(span => {
+                const valor = parseFloat(span.textContent.replace("R$ ", "")) || 0;
+                const checkbox = span.parentElement.querySelector(".checkbox");
+                if (checkbox.checked) {
+                    totalComMarcado += valor;
+                }
+            });
+            
+            document.getElementById("totalComMarcado").textContent = `R$ ${totalComMarcado.toFixed(2)}`;
+        }
+
+        function removerItem(botao) {
+            const li = botao.parentElement;
+            li.remove();
+            atualizarTotal();
+            exibirAlerta("Item excluído com sucesso!", "error"); // Alerta de exclusão
+        }
+
+        function exibirAlerta(mensagem, tipo) {
+            const alerta = tipo === "success" ? document.getElementById("successAlert") : document.getElementById("customAlert");
+            alerta.textContent = mensagem;
+            alerta.className = `alert ${tipo}`;
+            alerta.style.display = "block";
+            alerta.style.animation = "slideIn 0.5s ease-out";
+
+            setTimeout(() => {
+                alerta.style.animation = "slideOut 0.5s ease-out";
+                setTimeout(() => {
+                    alerta.style.display = "none";
+                }, 500);
+            }, 3000);
+        }
+
+        function enviarWhatsApp() {
+            const total = document.getElementById("totalComMarcado").textContent;
+            const mensagem = `Olá, minha lista de compras:\n\nTotal: ${total}\n\nA lista está completa!`;
+            const url = `https://wa.me/?text=${encodeURIComponent(mensagem)}`;
+            window.open(url, "_blank");
+        }
+    </script>
+</body>
+</html>
