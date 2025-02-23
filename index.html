@@ -92,16 +92,12 @@
             font-size: 16px;
             padding: 8px;
             text-align: center;
-            width: 100px;
+            width: 20px;
         }
         .preco-text {
             min-width: 90px;
         }
-        .checkbox {
-            transform: scale(1.2);
-            margin-left: 5px;
-            cursor: pointer;
-        }
+        
         .calculadora {
             position: fixed;
             bottom: 75px;
@@ -239,15 +235,11 @@
     margin-top: 8px;
     transition: 0.3s;
 }
-.checkbox {
-    transform: scale(1.2);
-    margin-left: 5px;
-    cursor: pointer;
-}
+
 .remover-container {
     display: flex;
     align-items: center;
-    gap: 10px; /* Ajuste o espaço entre o checkbox e o botão X */
+    gap: 10px; 
 }
 
     </style>
@@ -264,7 +256,7 @@
         </button>
     </div>
     <div class="calculadora">
-        <p>Total adicionado: <span id="totalComMarcado">R$ 0,00</span></p>
+        <p>Total: <span id="totalComMarcado">R$ 0,00</span></p>
     </div>
     <div id="customAlert" class="alert">Este item já está na lista!</div>
     <div id="successAlert" class="alert">Item adicionado com sucesso!</div>
@@ -293,7 +285,7 @@ li.innerHTML = `<span class='item-text' onclick='editarItem(this)'>${itemNome}</
                 <span class='preco-text' onclick='editarPreco(this)'>R$ 0.00</span>
                 <input type='number' class='preco-input' placeholder='Preço' onblur='salvarPreco(this)' oninput='atualizarTotal()'>
                 <div class='remover-container'>
-                    <input type='checkbox' class='checkbox' onchange='atualizarTotal()'>
+                    
                     <button class='remover' onclick='removerItem(this)'>X</button>
                 </div>`;
 lista.appendChild(li);
@@ -334,18 +326,16 @@ lista.appendChild(li);
         }
 
         function atualizarTotal() {
-            let totalComMarcado = 0;
-            
-            document.querySelectorAll(".preco-text").forEach(span => {
-                const valor = parseFloat(span.textContent.replace("R$ ", "")) || 0;
-                const checkbox = span.parentElement.querySelector(".checkbox");
-                if (checkbox.checked) {
-                    totalComMarcado += valor;
-                }
-            });
-            
-            document.getElementById("totalComMarcado").textContent = `R$ ${totalComMarcado.toFixed(2)}`;
-        }
+    let totalComMarcado = 0;
+    
+    document.querySelectorAll(".preco-text").forEach(span => {
+        const valor = parseFloat(span.textContent.replace("R$ ", "")) || 0;
+        totalComMarcado += valor;
+    });
+    
+    document.getElementById("totalComMarcado").textContent = `R$ ${totalComMarcado.toFixed(2)}`;
+}
+
 
         function removerItem(botao) {
     const li = botao.closest("li"); // Encontre o elemento <li> que contém o botão "X"
