@@ -1,0 +1,358 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+body {
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4a90e2, #6fa3ef);
+    margin: 0;
+    padding: 20px;
+    color: #333;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 100%;
+    min-height: 80vh;
+    overflow-y: auto;
+}
+
+h2 {
+    color: #4a90e2;
+    font-weight: 600;
+    text-align: center;
+    font-size: 24px;
+}
+
+input, button {
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+input {
+    border: 2px solid #4a90e2;
+    outline: none;
+}
+
+button {
+    background-color: #4a90e2;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+    font-weight: 600;
+}
+
+button:hover {
+    background-color: #357ab7;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: #f0f8ff;
+    border-radius: 8px;
+    margin-top: 8px;
+    transition: 0.3s;
+}
+
+.item-text, .preco-text {
+    flex-grow: 1;
+    cursor: pointer;
+    padding: 8px;
+    min-width: 80px;
+    text-align: left;
+    font-size: 16px;
+}
+
+.item-input, .preco-input {
+    display: none;
+    flex-grow: 1;
+    border: none;
+    background: none;
+    font-size: 16px;
+    padding: 8px;
+    text-align: center;
+    width: 20px;
+}
+
+.preco-text {
+    min-width: 90px;
+}
+
+.calculadora {
+    position: fixed;
+    bottom: 75px;
+    right: 20px;
+    background: #4a90e2;
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.remover {
+    background: linear-gradient(135deg, #ff4d4d, #ff1a1a);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+    flex-shrink: 0;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.remover:hover {
+    background: linear-gradient(135deg, #ff1a1a, #e60000);
+    transform: scale(1.1);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+}
+
+.remover:active {
+    transform: scale(0.9);
+}
+
+.alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    padding: 15px 25px;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    font-size: 16px;
+    font-weight: 600;
+    display: none;
+    animation: slideIn 0.5s ease-out;
+}
+
+.alert.error {
+    background-color: #ff4d4d;
+}
+
+.alert.success {
+    background-color: #4caf50;
+}
+
+@keyframes slideIn {
+    from {
+        top: -50px;
+        opacity: 0;
+    }
+    to {
+        top: 20px;
+        opacity: 1;
+    }
+}
+
+@keyframes slideOut {
+    from {
+        top: 20px;
+        opacity: 1;
+    }
+    to {
+        top: -50px;
+        opacity: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    input, button {
+        padding: 10px;
+        font-size: 14px;
+    }
+
+    .item-text, .preco-text {
+        font-size: 14px;
+    }
+
+    .remover {
+        width: 35px;
+        height: 35px;
+        font-size: 16px;
+    }
+
+    .calculadora {
+        font-size: 16px;
+        padding: 12px;
+    }
+}
+
+/* Novo estilo para o botão de WhatsApp */
+.whatsapp-btn {
+    background-color: #25D366;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 18px;
+    font-weight: 600;
+    padding: 12px 20px;
+    border-radius: 8px;
+    width: auto;
+    max-width: 300px;
+    margin-top: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    transition: 0.3s;
+}
+
+.whatsapp-btn:hover {
+    background-color: #128C7E;
+}
+
+.whatsapp-btn img {
+    width: 20px;
+    height: 20px;
+}
+
+.remover-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Estilos para o Pop-up de Confirmação */
+.popup-confirmacao {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Cor de fundo mais suave */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999; /* Tela de fundo com z-index menor */
+}
+
+/* Tela de fundo transparente */
+.popup-confirmacao {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Cor de fundo mais suave */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+/* Pop-up */
+.popup-content {
+    background: #4a90e2;
+    padding: 30px 40px;
+    border-radius: 20px;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    color: white;
+    font-size: 18px;
+    font-weight: 600;
+    animation: fadeIn 0.5s ease-out;
+    z-index: 1000; /* Garantir que o pop-up fique acima da tela de fundo */
+    top: 100px; /* Afastar o pop-up do topo */
+    position: relative; /* Para que o 'top' funcione */
+    left: 3px;
+}
+
+
+.popup-btn-sim {
+    background-color: #ac392a; /* Verde suave */
+    color: white;
+    padding: 10px 20px; /* Botão menor */
+    border: none;
+    border-radius: 8px;
+    margin: 20px 10px 0;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave no botão */
+}
+
+.popup-btn-sim:hover {
+    background-color: #218838;
+    transform: scale(1.05);
+}
+
+.popup-btn-sim:active {
+    transform: scale(0.98);
+}
+
+.popup-btn-nao {
+    background-color: #9E9E9E; /* Vermelho vibrante */
+    color: white;
+    padding: 10px 20px; /* Botão menor */
+    border: none;
+    border-radius: 8px;
+    margin: 20px 10px 0;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 16px;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra suave no botão */
+}
+
+.popup-btn-nao:hover {
+    background-color: #333131;
+    transform: scale(1.05);
+}
+
+.popup-btn-nao:active {
+    transform: scale(0.98);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+    }
+}
