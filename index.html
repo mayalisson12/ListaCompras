@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <title>Lista de Compras</title>
     <link rel="stylesheet" href="style.css">
 </head>
@@ -29,7 +29,8 @@
     <!-- Pop-up de confirmação de exclusão -->
     <div id="popupDeleteConfirmation" class="popup-confirmacao" style="display: none;">
         <div class="popup-content">
-            <p>Tem certeza que deseja excluir este item?</p>
+            <!-- Mensagem será dinâmica, adicionada pelo JavaScript -->
+            <p class="mensagem">Tem certeza que deseja excluir este item?</p>
             <div class="popup-buttons">
                 <button class="popup-btn-sim" onclick="removerItemConfirmado()">Confirmar</button>
                 <button class="popup-btn-nao" onclick="fecharPopup()">Cancelar</button>
@@ -38,5 +39,19 @@
     </div>
 
     <script src="script.js"></script>
+    <script>
+        // Previne o zoom ao focar nos campos de input
+        document.querySelectorAll('input, textarea').forEach(function(element) {
+            element.addEventListener('focus', function() {
+                document.body.style.zoom = '100%';  // Ajusta o zoom para 100% ao focar no input
+            });
+
+            element.addEventListener('blur', function() {
+                setTimeout(function() {
+                    document.body.style.zoom = '100%';  // Restaura o zoom original quando o teclado é fechado
+                }, 100); // Delay para garantir que o teclado tenha fechado
+            });
+        });
+    </script>
 </body>
 </html>

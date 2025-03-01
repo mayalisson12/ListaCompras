@@ -81,7 +81,12 @@ function atualizarTotal() {
 
 function confirmarRemocao(botao) {
     const confirmacao = document.getElementById("popupDeleteConfirmation");
+    const itemNome = botao.closest("li").querySelector(".item-text").textContent; // Pega o nome do item
     confirmacao.style.display = "block";
+    
+    // Altera o texto da mensagem para incluir o nome do item
+    confirmacao.querySelector(".mensagem").textContent = `Tem certeza que deseja excluir o item "${itemNome}"?`;
+    
     confirmacao.dataset.itemParaRemover = botao.closest("li").outerHTML;
 }
 
@@ -170,3 +175,16 @@ function enviarWhatsApp() {
     const url = `https://wa.me/?text=${encodeURIComponent(listaDeCompras)}`;
     window.open(url, "_blank");
 }
+
+// Previne o zoom ao focar nos campos de input
+document.querySelectorAll('input, textarea').forEach(function(element) {
+    element.addEventListener('focus', function() {
+        document.body.style.zoom = '100%';  // Ajusta o zoom para 100% ao focar no input
+    });
+
+    element.addEventListener('blur', function() {
+        setTimeout(function() {
+            document.body.style.zoom = '100%';  // Restaura o zoom original quando o teclado é fechado
+        }, 100); // Delay para garantir que o teclado tenha fechado
+    });
+});
